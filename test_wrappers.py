@@ -1731,6 +1731,13 @@ def test_bcftools_norm(run):
     )
 
 
+def test_bcftools_annotate(run):
+    run(
+        "bio/bcftools/annotate",
+        ["snakemake", "a.annotated.vcf", "a.removed.vcf.gz", "a.renamed.bcf"],
+    )
+
+
 def test_bcftools_view(run):
     run(
         "bio/bcftools/view",

@@ -1,0 +1,43 @@
+rule annotate_from_tab:
+    input:
+        "{prefix}.bcf",  # input bcf/vcf needs to be the first input
+        annotations="annot.tab.gz",  # bgzip-compressed and tabix-indexed
+        annotations_idx="annot.tab.gz.tbi",  # not passed on, only makes sure the index exists
+        header_lines="header.txt",
+    output:
+        "{prefix}.annotated.vcf",  # can also be .vcf.gz or .bcf; --output-type is inferred from the extension
+    log:
+        "log/{prefix}.annotated.log",
+    params:
+        extra="--columns CHROM,POS,INFO/ANN_ID",
+        # uncompressed_bcf=False,
+    threads: 2
+    wrapper:
+        "master/bio/bcftools/annotate"
+
+
+rule annotate_remove:
+    input:
+        "{prefix}.bcf",
+    output:
+        "{prefix}.removed.vcf.gz",
+    log:
+        "log/{prefix}.removed.log",
+    params:
+        extra="--remove INFO/XX",
+    wrapper:
+        "master/bio/bcftools/annotate"
+
+
+rule annotate_rename_chrs:
+    input:
+        "{prefix}.bcf",
+        rename_chrs="rename_chrs.txt",
+    output:
+        "{prefix}.renamed.bcf",
+    log:
+        "log/{prefix}.renamed.log",
+    params:
+        extra="",
+    wrapper:
+        "master/bio/bcftools/annotate"

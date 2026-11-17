@@ -1,0 +1,1 @@
+##INFO=<ID=ANN_ID,Number=1,Type=String,Description="Test annotation">

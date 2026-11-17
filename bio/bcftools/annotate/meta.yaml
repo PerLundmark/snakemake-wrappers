@@ -1,0 +1,21 @@
+name: bcftools annotate
+description: Add or remove annotations, and rename chromosomes or annotation fields, in a VCF/BCF file.
+url: http://www.htslib.org/doc/bcftools.html#annotate
+authors:
+  - Per Lundmark
+input:
+  - VCF/BCF file (must be the first input)
+  - annotations: VCF/BCF or tab-delimited file with the annotations (optional; `-a/--annotations`). It must be bgzip-compressed and indexed, so also list its index (`.tbi`/`.csi`) as an input
+  - header_lines: file with header lines to add to the output (optional; `-h/--header-lines`)
+  - rename_chrs: file with "old new" chromosome names, one pair per line (optional; `--rename-chrs`)
+  - rename_annots: file with "old new" annotation names, one pair per line (optional; `--rename-annots`)
+  - regions: regions file (optional; `-R/--regions-file`). Needs an indexed input, so also give the input index as `index`
+  - index: index of the input VCF/BCF (required if `regions` is given)
+  - samples: file with the samples to annotate (optional; `-S/--samples-file`)
+output:
+  - Annotated VCF/BCF file. The output type (`-O`) is inferred from the extension (`.vcf`, `.vcf.gz` or `.bcf`)
+params:
+  - uncompressed_bcf: output an uncompressed BCF (ignored for other output types)
+  - extra: additional program arguments, e.g. `-c/--columns`, `-x/--remove`, `-m/--mark-sites` or `-i/-e` (not `--threads`, `-o/--output`, `-O/--output-type`, or any option filled from a named input above)
+notes: |
+  * Threads given to the rule are passed on as `--threads {threads - 1}`, as in the other bcftools wrappers.
